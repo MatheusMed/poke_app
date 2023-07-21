@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:poke_app/presenter/search_view/list_pokemons.dart';
+import 'package:poke_app/presenter/navigation_bar_view.dart';
 
-void main() {
+import 'core/services/hive_config.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveConfig.init();
   runApp(const MainApp());
 }
 
@@ -11,7 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const ListPokemons(),
+      home: const NavigationBarView(),
       theme: ThemeData.dark(useMaterial3: true),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:poke_app/data/database/hive_implements.dart';
 import 'package:poke_app/data/repositories/pokemon_repository_data.dart';
 import 'package:poke_app/domain/usescases/pokemon_usescases.dart';
-import 'package:poke_app/presenter/search_view/controllers/pokemon_controllers.dart';
-import 'package:poke_app/presenter/search_view/widgets/list_result_search.dart';
+import 'package:poke_app/presenter/pokemons_view/controllers/pokemon_controllers.dart';
+import 'package:poke_app/presenter/pokemons_view/widgets/list_pokemons_widget.dart';
 
 import '../../core/services/dio_services.dart';
 import '../../data/datasource/pokemon_datasource.dart';
@@ -16,11 +17,14 @@ class ListPokemons extends StatefulWidget {
 
 class _ListPokemonsState extends State<ListPokemons> {
   final controller = PokemonControllers(
-    PokemonUsescases(PokemonRepositoryData(
-      PokemonDatasource(
-        DioServices(),
+    PokemonUsescases(
+      PokemonRepositoryData(
+        PokemonDatasource(
+          DioServices(),
+        ),
       ),
-    )),
+    ),
+    HiveImplements(),
   );
 
   int offSet = 25;
@@ -63,9 +67,10 @@ class _ListPokemonsState extends State<ListPokemons> {
                     ),
                   );
           }),
-      body: ListResultSearch(
+      body: ListPokemonsWidget(
         loading: controller.loading,
-        listaSearch: controller.listaPokemon,
+        listPokemons: controller.listaPokemon,
+        controller: controller,
       ),
     );
   }

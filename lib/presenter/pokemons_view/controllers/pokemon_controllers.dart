@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:poke_app/data/database/i_database_hive.dart';
 
 import '../../../core/failure/search_failure.dart';
 import '../../../domain/entities/pokemon_entities.dart';
 import '../../../domain/usescases/pokemon_usescases.dart';
 
 class PokemonControllers extends ChangeNotifier {
-  final PokemonUsescases _iPokemonUsescases;
+  final IPokemonUsescases _iPokemonUsescases;
+  final IDatabaseHive _databaseHive;
 
-  PokemonControllers(this._iPokemonUsescases);
+  PokemonControllers(this._iPokemonUsescases, this._databaseHive);
 
   final listaPokemon = ValueNotifier(<PokemonsEntities>[]);
   final loading = ValueNotifier(false);
@@ -27,5 +29,19 @@ class PokemonControllers extends ChangeNotifier {
       notifyListeners();
       loading.value = false;
     }
+  }
+
+  savePokemon(PokemonsEntities pokemonsEntities) async {
+    await _databaseHive.savePokemon(pokemonsEntities);
+    print('salvou');
+  }
+
+  getListPokemonSave() async {
+    final lista = await _databaseHive.getListaPokemonSave();
+    return lista;
+  }
+
+  deletePokemonSave(int index) async {
+    return await _databaseHive.deletePokemonSave(index);
   }
 }
